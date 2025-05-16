@@ -1,8 +1,6 @@
 import pygame
 import random
 
-WIDTH, HEIGHT = 768, 768
-
 class Cloud:
     def __init__(self, screen_width, screen_height, image_path):
         self.image_path = image_path
@@ -13,13 +11,15 @@ class Cloud:
         self.height = int(60 * size_factor)
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
 
+        self.screen_width = screen_width
         self.x = -self.width
         self.y = random.randint(10, 250)
         self.speed = random.uniform(2, 4)
 
-    def update(self):
+    def update(self, current_width):
+        self.screen_width = current_width
         self.x += self.speed
-        if self.x > WIDTH:
+        if self.x > self.screen_width:
             self.reset()
 
     def reset(self):
