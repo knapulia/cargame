@@ -3,6 +3,7 @@ import sys
 from pygame import RESIZABLE
 from cloud import Cloud
 from button import Button
+from car_config import set_car_color_path
 
 WIDTH, HEIGHT = 768, 768
 WHITE = (255, 255, 255)
@@ -22,6 +23,9 @@ clouds = [Cloud(WIDTH, HEIGHT, "assets/cloud.png") for _ in range(3)]
 font_path = "assets/pixel_font.ttf"
 button_font = pygame.font.Font(font_path, 36)
 
+# глобальна змінна для збереження кнопок налаштувань
+settings_buttons = []
+
 def start_menu(title, buttons):
     global WIDTH, HEIGHT, screen, background
     while True:
@@ -33,16 +37,21 @@ def start_menu(title, buttons):
                 WIDTH, HEIGHT = event.w, event.h
                 screen = pygame.display.set_mode((WIDTH, HEIGHT), RESIZABLE)
                 background = pygame.transform.scale(pygame.image.load("assets/menu_background.png"), (WIDTH, HEIGHT))
-                for button_list in [menu_buttons, easy_buttons, middle_buttons, hard_buttons, settings_buttons]:
-                    for button in button_list:
-                        button.update_position(WIDTH, HEIGHT)
+
+                # оновлюємо позиції кнопок для всіх меню
+                all_menus = [menu_buttons, easy_buttons, middle_buttons, hard_buttons, settings_buttons]
+                for button_list in all_menus:
+                    if button_list:
+                        for button in button_list:
+                            button.update_position(WIDTH, HEIGHT)
+
             for button in buttons:
                 button.handle_event(event)
 
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
         for cloud in clouds:
-            cloud.update()
+            cloud.update(WIDTH)
             cloud.draw(screen)
         for button in buttons:
             button.draw(screen)
@@ -63,7 +72,51 @@ def hard_menu():
     start_menu("HARD LEVEL", hard_buttons)
 
 def settings_menu():
+    global settings_buttons
+
+    car_colors = [
+        ("RED", "assets/car_red.PNG"),
+        ("GREEN", "assets/car_green.PNG"),
+        ("WHITE", "assets/car_white.PNG")
+    ]
+
+    car_buttons = []
+    spacing = 220
+    start_x = WIDTH // 2 - spacing
+
+    for i, (color_name, image_path) in enumerate(car_colors):
+        btn = Button(
+            x=start_x + i * spacing - WIDTH // 2,
+            y=250,
+            normal_image="assets/normal_button.png",
+            pressed_image="assets/pressed_button.png",
+            text=color_name,
+            font=button_font,
+            size=(160, 60),
+            action=lambda c=color_name, p=image_path: select_car_color(c, p)
+        )
+        car_buttons.append(btn)
+
+    back_btn = Button(
+        0, 400,
+        "assets/normal_button.png",
+        "assets/pressed_button.png",
+        "BACK",
+        button_font,
+        size=(200, 70),
+        action=main_menu
+    )
+
+    # 🔥 тут важливо — оновлюємо глобальний список
+    settings_buttons = car_buttons + [back_btn]
+
+    # передаємо саме той список, що буде в глобальній змінній
     start_menu("SETTINGS", settings_buttons)
+
+
+def select_car_color(color_name, path):
+    set_car_color_path(path)
+    print(f"Обрано машинку: {color_name}")
 
 def exit_game():
     print("Вихід з гри!")
@@ -73,7 +126,6 @@ def exit_game():
 def main_menu():
     start_menu("MENU", menu_buttons)
 
-# Кнопки меню
 menu_buttons = [
     Button(0, 160, "assets/normal_button.png", "assets/pressed_button.png", "EASY", button_font, size=(200, 70), action=easy_menu),
     Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "MIDDLE", button_font, size=(200, 70), action=middle_menu),
@@ -90,6 +142,3 @@ easy_buttons = [
 
 middle_buttons = easy_buttons.copy()
 hard_buttons = easy_buttons.copy()
-settings_buttons = [
-    Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
-]
