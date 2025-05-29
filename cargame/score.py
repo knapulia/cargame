@@ -3,7 +3,9 @@ import json
 import os
 import pygame
 
+
 DATA_FILE = "score_data.json"
+
 
 class ScoreManager:
     def __init__(self, level):
@@ -48,7 +50,13 @@ class ScoreManager:
         return {}
 
     def draw_score(self, surface):
-        score_text = self.font.render(f"Score: {self.score}s", True, (255, 255, 255))
-        best_text = self.font.render(f"Best: {self.best_score}s", True, (255, 255, 0))
+        score_text = self.font.render(
+            f"Score: {self.score}s", True,
+            (255, 255, 255)
+        )
+        best_text = self.font.render(
+            f"Best: {self.best_score}s", True,
+            (255, 255, 0)
+        )
         surface.blit(score_text, (10, 10))
         surface.blit(best_text, (10, 40))

@@ -20,13 +20,15 @@ class Bush(pygame.sprite.Sprite):
 
         # Кущі з'являються або зліва, або справа
         if random.choice([True, False]):
-            # Ліва сторона, трохи за межами основної дороги (припустимо ширина дороги ~WIDTH/2)
+            # Ліва сторона, трохи за межами основної дороги
+            # (припустимо ширина дороги ~WIDTH/2)
             self.rect.centerx = random.randint(20, WIDTH // 4 - 50)
         else:
             # Права сторона
             self.rect.centerx = random.randint(3 * WIDTH // 4 + 50, WIDTH - 20)
 
-        self.rect.bottom = random.randint(-HEIGHT, 0)  # Починають зверху, за межами екрану
+        self.rect.bottom = random.randint(-HEIGHT, 0)
+        # Починають зверху, за межами екрану
         self.speed = speed
 
     def update(self):
@@ -37,8 +39,10 @@ class Bush(pygame.sprite.Sprite):
             if random.choice([True, False]):
                 self.rect.centerx = random.randint(20, WIDTH // 4 - 50)
             else:
-                self.rect.centerx = random.randint(3 * WIDTH // 4 + 50, WIDTH - 20)
-            self.rect.y = random.randint(-200, -50)  # Знову за межами екрану зверху
+                self.rect.centerx = (
+                    random.randint(3 * WIDTH // 4 + 50, WIDTH - 20))
+            self.rect.y = random.randint(-200, -50)
+            # Знову за межами екрану зверху
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

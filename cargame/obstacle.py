@@ -1,7 +1,7 @@
 # cargame/obstacle.py
 import pygame
 import random
-from settings import PLAYER_WIDTH, PLAYER_HEIGHT, LANES_X, WIDTH
+from settings import PLAYER_WIDTH, PLAYER_HEIGHT, LANES_X
 
 
 class EnemyCar(pygame.sprite.Sprite):
@@ -11,11 +11,14 @@ class EnemyCar(pygame.sprite.Sprite):
             # Завантажуємо зображення і одразу повертаємо його на 180 градусів
             original_image = pygame.image.load(image_path).convert_alpha()
             self.image = pygame.transform.rotate(original_image, 180)
-            self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
+            self.image = pygame.transform.scale(self.image,
+                                                (PLAYER_WIDTH, PLAYER_HEIGHT))
         except pygame.error as e:
-            print(f"Помилка завантаження зображення ворога: {image_path} - {e}")
+            print(f"Помилка завантаження зображення ворога: "
+                  f"{image_path} - {e}")
             self.image = pygame.Surface([PLAYER_WIDTH, PLAYER_HEIGHT])
-            self.image.fill((255, 0, 0))  # Червоний прямокутник як запасний варіант
+            self.image.fill((255, 0, 0))
+            # Червоний прямокутник як запасний варіант
 
         self.rect = self.image.get_rect()
 

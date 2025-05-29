@@ -2,18 +2,23 @@
 import pygame
 from settings import PLAYER_WIDTH, PLAYER_HEIGHT, LANES_X, HEIGHT
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, image_path):
         super().__init__()
         try:
-            self.original_image = pygame.image.load(image_path).convert_alpha()
+            self.original_image = pygame.image.load(
+                image_path).convert_alpha()
         except pygame.error as e:
-            print(f"Помилка завантаження зображення гравця: {image_path} - {e}")
+            print(f"Помилка завантаження зображення гравця:"
+                  f" {image_path} - {e}")
             # Запасний варіант, якщо зображення не знайдено
-            self.original_image = pygame.Surface([PLAYER_WIDTH, PLAYER_HEIGHT])
-            self.original_image.fill((0, 255, 0)) # Зелений прямокутник
+            self.original_image = pygame.Surface(
+                [PLAYER_WIDTH, PLAYER_HEIGHT])
+            self.original_image.fill((0, 255, 0))  # Зелений прямокутник
 
-        self.image = pygame.transform.scale(self.original_image, (PLAYER_WIDTH, PLAYER_HEIGHT))
+        self.image = pygame.transform.scale(
+            self.original_image, (PLAYER_WIDTH, PLAYER_HEIGHT))
         self.rect = self.image.get_rect()
 
         self.lanes = LANES_X
@@ -21,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.lanes[self.current_lane_index]
         self.rect.bottom = HEIGHT - 30  # Позиція внизу екрану
 
-        self.speed = 5 # Швидкість зміни смуги (можна налаштувати)
+        self.speed = 5  # Швидкість зміни смуги (можна налаштувати)
 
     def move_left(self):
         if self.current_lane_index > 0:
@@ -36,7 +41,8 @@ class Player(pygame.sprite.Sprite):
 
     def handle_input(self, keys):
         # Обробка натискання клавіш буде в ігровому циклі,
-        # оскільки нам потрібне одноразове реагування на натискання, а не утримання
+        # оскільки нам потрібне одноразове
+        # реагування на натискання, а не утримання
         pass
 
     def update(self):

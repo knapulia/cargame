@@ -5,7 +5,6 @@ from cloud import Cloud
 from button import Button
 from car_config import set_car_color_path
 from game import run_easy_level, run_middle_level, run_hard_level
-from score import ScoreManager
 
 
 WIDTH, HEIGHT = 768, 768
@@ -29,6 +28,7 @@ button_font = pygame.font.Font(font_path, 36)
 # глобальна змінна для збереження кнопок налаштувань
 settings_buttons = []
 
+
 def start_menu(title, buttons):
     global WIDTH, HEIGHT, screen, background
     while True:
@@ -39,10 +39,12 @@ def start_menu(title, buttons):
             elif event.type == pygame.VIDEORESIZE:
                 WIDTH, HEIGHT = event.w, event.h
                 screen = pygame.display.set_mode((WIDTH, HEIGHT), RESIZABLE)
-                background = pygame.transform.scale(pygame.image.load("assets/menu_background.png"), (WIDTH, HEIGHT))
+                background = pygame.transform.scale(pygame.image.load(
+                    "assets/menu_background.png"), (WIDTH, HEIGHT))
 
                 # оновлюємо позиції кнопок для всіх меню
-                all_menus = [menu_buttons, easy_buttons, middle_buttons, hard_buttons, settings_buttons]
+                all_menus = [menu_buttons, easy_buttons,
+                             middle_buttons, hard_buttons, settings_buttons]
                 for button_list in all_menus:
                     if button_list:
                         for button in button_list:
@@ -65,14 +67,18 @@ def start_menu(title, buttons):
         screen.blit(text_surface, text_rect)
         pygame.display.flip()
 
+
 def easy_menu():
     start_menu("EASY LEVEL", easy_buttons)
+
 
 def middle_menu():
     start_menu("MIDDLE LEVEL", middle_buttons)
 
+
 def hard_menu():
     start_menu("HARD LEVEL", hard_buttons)
+
 
 def settings_menu():
     global settings_buttons
@@ -113,39 +119,66 @@ def settings_menu():
     settings_buttons = car_buttons + [back_btn]
     start_menu("SETTINGS", settings_buttons)
 
+
 def select_car_color(color_name, path):
     set_car_color_path(path)
     print(f"Обрано машинку: {color_name}")
+
 
 def exit_game():
     print("Вихід з гри!")
     pygame.quit()
     sys.exit()
 
+
 def main_menu():
     start_menu("MENU", menu_buttons)
 
 
 menu_buttons = [
-    Button(0, 160, "assets/normal_button.png", "assets/pressed_button.png", "EASY", button_font, size=(200, 70), action=easy_menu),
-    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "MIDDLE", button_font, size=(200, 70), action=middle_menu),
-    Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "HARD", button_font, size=(200, 70), action=hard_menu),
-    Button(0, 400, "assets/normal_button.png", "assets/pressed_button.png", "SETTINGS", button_font, size=(200, 70), action=settings_menu),
-    Button(0, 480, "assets/normal_button.png", "assets/pressed_button.png", "EXIT", button_font, size=(200, 70), action=exit_game)
+    Button(0, 160, "assets/normal_button.png",
+           "assets/pressed_button.png", "EASY",
+           button_font, size=(200, 70), action=easy_menu),
+    Button(0, 240, "assets/normal_button.png",
+           "assets/pressed_button.png", "MIDDLE",
+           button_font, size=(200, 70), action=middle_menu),
+    Button(0, 320, "assets/normal_button.png",
+           "assets/pressed_button.png", "HARD",
+           button_font, size=(200, 70), action=hard_menu),
+    Button(0, 400, "assets/normal_button.png",
+           "assets/pressed_button.png", "SETTINGS",
+           button_font, size=(200, 70), action=settings_menu),
+    Button(0, 480, "assets/normal_button.png",
+           "assets/pressed_button.png", "EXIT",
+           button_font, size=(200, 70), action=exit_game)
 ]
+
 
 easy_buttons = [
-    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70), action=run_easy_level),
-    Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
+    Button(0, 240, "assets/normal_button.png",
+           "assets/pressed_button.png", "START",
+           button_font, size=(200, 70), action=run_easy_level),
+    Button(0, 320, "assets/normal_button.png",
+           "assets/pressed_button.png", "BACK",
+           button_font, size=(200, 70), action=main_menu)
 ]
+
 
 middle_buttons = [
-    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70), action=run_middle_level),
-    Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
+    Button(0, 240, "assets/normal_button.png",
+           "assets/pressed_button.png", "START",
+           button_font, size=(200, 70), action=run_middle_level),
+    Button(0, 320, "assets/normal_button.png",
+           "assets/pressed_button.png", "BACK",
+           button_font, size=(200, 70), action=main_menu)
 ]
+
 
 hard_buttons = [
-    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70), action=run_hard_level),
-    Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
+    Button(0, 240, "assets/normal_button.png",
+           "assets/pressed_button.png", "START",
+           button_font, size=(200, 70), action=run_hard_level),
+    Button(0, 320, "assets/normal_button.png",
+           "assets/pressed_button.png", "BACK",
+           button_font, size=(200, 70), action=main_menu)
 ]
-

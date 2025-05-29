@@ -1,6 +1,7 @@
 import pygame
 import random
 
+
 class Cloud:
     def __init__(self, screen_width, screen_height, image_path):
         self.image_path = image_path
@@ -9,7 +10,9 @@ class Cloud:
         size_factor = random.uniform(0.8, 1.5)
         self.width = int(150 * size_factor)
         self.height = int(60 * size_factor)
-        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.image = pygame.transform.scale(self.image,
+                                            (self.width, self.height)
+                                            )
 
         self.screen_width = screen_width
         self.x = -self.width
@@ -28,7 +31,9 @@ class Cloud:
         size_factor = random.uniform(0.8, 1.5)
         self.width = int(100 * size_factor)
         self.height = int(60 * size_factor)
-        self.image = pygame.transform.scale(pygame.image.load(self.image_path), (self.width, self.height))
+        self.image = pygame.transform.scale(
+            pygame.image.load(self.image_path), (self.width, self.height)
+        )
         self.speed = random.uniform(2, 4)
 
     def draw(self, screen):

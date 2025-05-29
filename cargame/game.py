@@ -1,11 +1,10 @@
 # cargame/game.py
 import pygame
 import sys
-import random
 from car_config import get_car_color_path
 from player import Player
 from obstacle import EnemyCar
-from settings import WIDTH, HEIGHT, FPS, LANES_X, PLAYER_HEIGHT
+from settings import WIDTH, HEIGHT, FPS, PLAYER_HEIGHT
 from score import ScoreManager
 
 # Кольори
@@ -36,8 +35,10 @@ def run_level_template(speed, delay, difficulty):
     ENEMY_SPAWN_DELAY = delay
 
     try:
-        road_bg_original = pygame.image.load("assets/level_background.PNG").convert()
-        road_bg = pygame.transform.scale(road_bg_original, (WIDTH, HEIGHT))
+        road_bg_original = pygame.image.load(
+            "assets/level_background.PNG").convert()
+        road_bg = pygame.transform.scale(
+            road_bg_original, (WIDTH, HEIGHT))
     except pygame.error as e:
         print(f"Помилка завантаження ресурсу: {e}")
         pygame.quit()
@@ -75,7 +76,8 @@ def run_level_template(speed, delay, difficulty):
 
             if not game_over:
                 if not game_active:
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    if (event.type == pygame.KEYDOWN
+                            and event.key == pygame.K_SPACE):
                         game_active = True
                         score.start()
                 else:
@@ -104,13 +106,18 @@ def run_level_template(speed, delay, difficulty):
                         can_spawn = True
                         temp_rect = new_enemy.rect.copy()
                         temp_rect.y += PLAYER_HEIGHT
-                        if temp_rect.colliderect(player.rect) and new_enemy.rect.centerx == player.rect.centerx:
+                        if (temp_rect.colliderect(player.rect)
+                                and new_enemy.rect.centerx ==
+                                player.rect.centerx):
                             can_spawn = False
 
                         if can_spawn:
                             lane_occupied = False
                             for enemy in enemies:
-                                if enemy.rect.centerx == new_enemy.rect.centerx and enemy.rect.bottom < PLAYER_HEIGHT * 2:
+                                if (enemy.rect.centerx ==
+                                        new_enemy.rect.centerx
+                                        and enemy.rect.bottom <
+                                        PLAYER_HEIGHT * 2):
                                     lane_occupied = True
                                     break
                             if not lane_occupied:
@@ -119,8 +126,10 @@ def run_level_template(speed, delay, difficulty):
                 enemies.update()
 
                 # Перевірка зіткнень
-                if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_mask):
-                    # pygame.sprite.collide_mask для більш точного зіткнення по пікселях
+                if pygame.sprite.spritecollide(
+                        player, enemies, False, pygame.sprite.collide_mask):
+                    # pygame.sprite.collide_mask для
+                    # більш точного зіткнення по пікселях
                     print("Зіткнення! Гру закінчено!")
                     game_over = True
                     game_active = False  # Зупиняємо рух
@@ -136,26 +145,29 @@ def run_level_template(speed, delay, difficulty):
             enemies.draw(screen)
 
             if not game_active and not game_over:
-                start_text = game_font_small.render("PRESS SPACE TO START", True, WHITE)
-                start_rect = start_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+                start_text = game_font_small.render(
+                    "PRESS SPACE TO START", True, WHITE)
+                start_rect = start_text.get_rect(
+                    center=(WIDTH // 2, HEIGHT // 2))
                 pygame.draw.rect(screen, BLACK, start_rect.inflate(20, 10))
                 screen.blit(start_text, start_rect)
 
         else:
             screen.fill(BLACK)
-            game_over_text = game_font_large.render("GAME OVER", True, RED)
-            game_over_rect = game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
+            game_over_text = game_font_large.render(
+                "GAME OVER", True, RED)
+            game_over_rect = game_over_text.get_rect(
+                center=(WIDTH // 2, HEIGHT // 2 - 50))
             screen.blit(game_over_text, game_over_rect)
 
-            prompt_text = game_font_small.render("Press any key to return to menu", True, WHITE)
-            prompt_rect = prompt_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
+            prompt_text = game_font_small.render(
+                "Press any key to return to menu", True, WHITE)
+            prompt_rect = prompt_text.get_rect(
+                center=(WIDTH // 2, HEIGHT // 2 + 50))
             screen.blit(prompt_text, prompt_rect)
 
         score.draw_score(screen)
         pygame.display.flip()
-
-
-
 
     # pygame.quit() # Не викликаємо тут, якщо повертаємось в меню
     # sys.exit()
