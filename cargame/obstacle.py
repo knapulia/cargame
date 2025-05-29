@@ -1,7 +1,7 @@
 # cargame/obstacle.py
 import pygame
 import random
-from settings import PLAYER_WIDTH, PLAYER_HEIGHT, LANES_X
+from cargame.settings import PLAYER_WIDTH, PLAYER_HEIGHT, LANES_X
 
 
 class EnemyCar(pygame.sprite.Sprite):
