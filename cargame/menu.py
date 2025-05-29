@@ -4,6 +4,7 @@ from pygame import RESIZABLE
 from cloud import Cloud
 from button import Button
 from car_config import set_car_color_path
+from game import run_easy_level
 
 WIDTH, HEIGHT = 768, 768
 WHITE = (255, 255, 255)
@@ -107,12 +108,8 @@ def settings_menu():
         action=main_menu
     )
 
-    # 🔥 тут важливо — оновлюємо глобальний список
     settings_buttons = car_buttons + [back_btn]
-
-    # передаємо саме той список, що буде в глобальній змінній
     start_menu("SETTINGS", settings_buttons)
-
 
 def select_car_color(color_name, path):
     set_car_color_path(path)
@@ -136,7 +133,7 @@ menu_buttons = [
 
 easy_buttons = [
     Button(0, 160, "assets/normal_button.png", "assets/pressed_button.png", "SCORE", button_font, size=(200, 70)),
-    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70)),
+    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70), action=run_easy_level),
     Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
 ]
 
