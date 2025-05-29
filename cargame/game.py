@@ -15,22 +15,35 @@ RED = (200, 0, 0)
 
 
 def run_easy_level():
+    run_level_template(speed=5, delay=2000, difficulty="easy")
+
+
+def run_middle_level():
+    run_level_template(speed=8, delay=1500, difficulty="middle")
+
+
+def run_hard_level():
+    run_level_template(speed=11, delay=1000, difficulty="hard")
+
+
+def run_level_template(speed, delay, difficulty):
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Easy Level")
+    pygame.display.set_caption(f"{difficulty.capitalize()} Level")
     clock = pygame.time.Clock()
 
-    game_speed = 5
+    game_speed = speed
+    ENEMY_SPAWN_DELAY = delay
 
     try:
         road_bg_original = pygame.image.load("assets/level_background.PNG").convert()
         road_bg = pygame.transform.scale(road_bg_original, (WIDTH, HEIGHT))
     except pygame.error as e:
-        print(f"Помилка завантаження ресурсів рівня: {e}")
+        print(f"Помилка завантаження ресурсу: {e}")
         pygame.quit()
         sys.exit()
 
-    bg_y = 0  # координата фону
+    bg_y = 0
 
     player_car_path = get_car_color_path()
     player = Player(player_car_path)
@@ -38,18 +51,16 @@ def run_easy_level():
 
     enemies = pygame.sprite.Group()
     enemy_spawn_timer = 0
-    ENEMY_SPAWN_DELAY_EASY = 2000
 
     game_active = False
     game_over = False
-    score = ScoreManager("easy")  # створюємо об'єкт для підрахунку часу
+    score = ScoreManager(difficulty)
 
     try:
         font_path = "assets/pixel_font.ttf"
         game_font_large = pygame.font.Font(font_path, 72)
         game_font_small = pygame.font.Font(font_path, 36)
     except FileNotFoundError:
-        print(f"Файл шрифту '{font_path}' не знайдено. Використовується стандартний шрифт.")
         game_font_large = pygame.font.SysFont(None, 72)
         game_font_small = pygame.font.SysFont(None, 36)
 
@@ -75,8 +86,8 @@ def run_easy_level():
                             player.move_right()
             else:
                 if event.type == pygame.KEYDOWN:
-                    from menu import easy_menu
-                    easy_menu()
+                    from menu import main_menu
+                    main_menu()
                     return
 
         if not game_over:
@@ -85,7 +96,7 @@ def run_easy_level():
                 score.update()
 
                 enemy_spawn_timer += dt
-                if enemy_spawn_timer >= ENEMY_SPAWN_DELAY_EASY:
+                if enemy_spawn_timer >= ENEMY_SPAWN_DELAY:
                     enemy_spawn_timer = 0
                     if len(enemies) < 3:
                         new_enemy = EnemyCar(player_car_path, game_speed)
@@ -115,11 +126,9 @@ def run_easy_level():
                     game_active = False  # Зупиняємо рух
                     score.save_best_score()
 
-                bg_y += game_speed  # Прокручуємо фон тільки під час активної гри
+                bg_y += game_speed
 
-            scroll = bg_y % HEIGHT  # Завжди обчислюємо scroll
-
-            # Малювання
+            scroll = bg_y % HEIGHT
             screen.blit(road_bg, (0, scroll - HEIGHT))
             screen.blit(road_bg, (0, scroll))
 
@@ -132,10 +141,8 @@ def run_easy_level():
                 pygame.draw.rect(screen, BLACK, start_rect.inflate(20, 10))
                 screen.blit(start_text, start_rect)
 
-
-
-        else:  # game_over is True
-            screen.fill(BLACK)  # Можна додати фон для "GAME OVER"
+        else:
+            screen.fill(BLACK)
             game_over_text = game_font_large.render("GAME OVER", True, RED)
             game_over_rect = game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
             screen.blit(game_over_text, game_over_rect)
@@ -146,6 +153,7 @@ def run_easy_level():
 
         score.draw_score(screen)
         pygame.display.flip()
+
 
 
 

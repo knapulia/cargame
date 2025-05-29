@@ -4,7 +4,7 @@ from pygame import RESIZABLE
 from cloud import Cloud
 from button import Button
 from car_config import set_car_color_path
-from game import run_easy_level
+from game import run_easy_level, run_middle_level, run_hard_level
 from score import ScoreManager
 
 
@@ -135,10 +135,17 @@ menu_buttons = [
 ]
 
 easy_buttons = [
-    Button(0, 160, "assets/normal_button.png", "assets/pressed_button.png", "SCORE", button_font, size=(200, 70)),
     Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70), action=run_easy_level),
     Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
 ]
 
-middle_buttons = easy_buttons.copy()
-hard_buttons = easy_buttons.copy()
+middle_buttons = [
+    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70), action=run_middle_level),
+    Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
+]
+
+hard_buttons = [
+    Button(0, 240, "assets/normal_button.png", "assets/pressed_button.png", "START", button_font, size=(200, 70), action=run_hard_level),
+    Button(0, 320, "assets/normal_button.png", "assets/pressed_button.png", "BACK", button_font, size=(200, 70), action=main_menu)
+]
+
