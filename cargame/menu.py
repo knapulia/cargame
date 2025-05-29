@@ -5,6 +5,8 @@ from cloud import Cloud
 from button import Button
 from car_config import set_car_color_path
 from game import run_easy_level
+from score import ScoreManager
+
 
 WIDTH, HEIGHT = 768, 768
 WHITE = (255, 255, 255)
@@ -122,6 +124,7 @@ def exit_game():
 
 def main_menu():
     start_menu("MENU", menu_buttons)
+
 
 menu_buttons = [
     Button(0, 160, "assets/normal_button.png", "assets/pressed_button.png", "EASY", button_font, size=(200, 70), action=easy_menu),

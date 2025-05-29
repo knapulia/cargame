@@ -6,6 +6,7 @@ from car_config import get_car_color_path
 from player import Player
 from obstacle import EnemyCar
 from settings import WIDTH, HEIGHT, FPS, LANES_X, PLAYER_HEIGHT
+from score import ScoreManager
 
 # Кольори
 WHITE = (255, 255, 255)
@@ -41,6 +42,7 @@ def run_easy_level():
 
     game_active = False
     game_over = False
+    score = ScoreManager("easy")  # створюємо об'єкт для підрахунку часу
 
     try:
         font_path = "assets/pixel_font.ttf"
@@ -64,6 +66,7 @@ def run_easy_level():
                 if not game_active:
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                         game_active = True
+                        score.start()
                 else:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
@@ -79,6 +82,7 @@ def run_easy_level():
         if not game_over:
             if game_active:
                 player.update()
+                score.update()
 
                 enemy_spawn_timer += dt
                 if enemy_spawn_timer >= ENEMY_SPAWN_DELAY_EASY:
@@ -109,6 +113,7 @@ def run_easy_level():
                     print("Зіткнення! Гру закінчено!")
                     game_over = True
                     game_active = False  # Зупиняємо рух
+                    score.save_best_score()
 
                 bg_y += game_speed  # Прокручуємо фон тільки під час активної гри
 
@@ -128,6 +133,7 @@ def run_easy_level():
                 screen.blit(start_text, start_rect)
 
 
+
         else:  # game_over is True
             screen.fill(BLACK)  # Можна додати фон для "GAME OVER"
             game_over_text = game_font_large.render("GAME OVER", True, RED)
@@ -138,6 +144,7 @@ def run_easy_level():
             prompt_rect = prompt_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
             screen.blit(prompt_text, prompt_rect)
 
+        score.draw_score(screen)
         pygame.display.flip()
 
 
