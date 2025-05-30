@@ -1,6 +1,6 @@
 # cargame/player.py
 import pygame
-from settings import PLAYER_WIDTH, PLAYER_HEIGHT, LANES_X, HEIGHT
+from cargame.settings import PLAYER_WIDTH, PLAYER_HEIGHT, LANES_X, HEIGHT
 
 
 class Player(pygame.sprite.Sprite):
