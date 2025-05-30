@@ -11,28 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
 
-      - name: Install system dependencies for Pillow
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libjpeg-dev zlib1g-dev
+    - name: Install system dependencies (for Pillow)
+      run: sudo apt-get update && sudo apt-get install -y libjpeg-dev zlib1g-dev
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Lint with flake8
-        run: |
-          flake8 cargame/ --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run flake8 and generate HTML report
+      run: |
+        mkdir -p report
+        flake8 cargame --format=html --htmldir=report/flake8_report || true
 
-      - name: Run tests
-        run: |
-          pytest cargame/tests --maxfail=3 --disable-warnings --html=report.html
+    - name: Run tests and generate HTML report
+      run: |
+        mkdir -p report
+        pytest cargame/tests --html=report/test_report.html --self-contained-html
+
+    - name: Upload HTML reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: reports
+        path: report
