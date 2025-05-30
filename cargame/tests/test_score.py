@@ -1,7 +1,8 @@
 import time
 import json
-from cargame.score import ScoreManager, DATA_FILE
+from cargame.score import ScoreManager
 import os
+
 
 def test_score_timing(tmp_path, monkeypatch):
     fake_file = tmp_path / "fake_score.json"

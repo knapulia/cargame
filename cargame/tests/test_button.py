@@ -18,6 +18,7 @@ def button(monkeypatch):
         action=lambda: print("clicked")
     )
 
+
 def test_button_event_press_release(button):
     down = pygame.event.Event(pygame.MOUSEBUTTONDOWN, pos=button.rect.center)
     up = pygame.event.Event(pygame.MOUSEBUTTONUP, pos=button.rect.center)
